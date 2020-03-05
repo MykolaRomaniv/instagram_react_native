@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import {
-  View,
-  Text,
-  Image,
-  ImageSourcePropType,
   Dimensions,
   FlatList,
+  Image,
+  ImageSourcePropType,
+  Text,
+  View,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import FontistoIcon from 'react-native-vector-icons/Fontisto'
-import { IPost } from './IPost'
-import Carousel, { Pagination } from 'react-native-snap-carousel'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+
+import { IPost } from '../../../types/IPost'
 import style from './style'
 
 interface IProps {
@@ -53,7 +54,7 @@ class Post extends Component<IProps> {
       <View>
         <View style={style.header}>
           <View style={style.avatar}>
-            <Image source={this.props.post.avatar} style={style.avatarImg}/>
+            <Image source={this.props.post.avatar} style={style.avatarImg} />
             <View style={style.avatarText}>
               <Text style={style.username}>{this.props.post.username}</Text>
               <Text>{this.props.post.location}</Text>

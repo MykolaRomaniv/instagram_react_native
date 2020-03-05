@@ -1,16 +1,23 @@
-import React, { Component } from 'react'
-import { View, Text, Image, Dimensions, FlatList, ScrollView } from 'react-native'
+import React from 'react'
+import { FlatList, Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import Carousel from 'react-native-snap-carousel'
-import { IPost } from '../../../../components/Post/IPost'
+
 import style from './style'
 
 const TEST_USER = {
-  photo: require('../../../../assets/Avatar.png'),
+  photo: require('../../../assets/Avatar.png'),
   username: 'vasya',
 }
 
-const USERS = [TEST_USER, TEST_USER, TEST_USER, TEST_USER, TEST_USER, TEST_USER, TEST_USER]
+const USERS = [
+  TEST_USER,
+  TEST_USER,
+  TEST_USER,
+  TEST_USER,
+  TEST_USER,
+  TEST_USER,
+  TEST_USER,
+]
 
 const renderItem = ({
   item,
@@ -21,7 +28,10 @@ const renderItem = ({
 }) => {
   return (
     <View style={style.storyItem}>
-      <Image source={require('../../../../assets/Avatar.png')} style={style.storyAvatar} />
+      <Image
+        source={require('../../../assets/Avatar.png')}
+        style={style.storyAvatar}
+      />
       <Text style={style.username}>{item.username}</Text>
     </View>
   )
@@ -38,7 +48,12 @@ const stories = () => {
         </View>
       </View>
       <View>
-        <FlatList data={USERS} renderItem={renderItem} horizontal={true} showsHorizontalScrollIndicator={false} />
+        <FlatList
+          data={USERS}
+          renderItem={renderItem}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
     </View>
   )

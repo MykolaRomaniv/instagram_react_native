@@ -20,15 +20,13 @@ const styles = StyleSheet.create({
   storyItem: {
     alignItems: 'center',
     marginHorizontal: 10,
-    // width: 80,
-    // height: 80,
   },
   storyAvatar: {
     borderWidth: 2,
     borderColor: 'red',
     borderRadius: 74 / 2,
-    width: 74,
-    height: 74,
+    width: 70,
+    height: 70,
   },
   username: {
     fontWeight: 'bold',

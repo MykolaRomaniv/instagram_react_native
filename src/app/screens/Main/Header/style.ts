@@ -7,10 +7,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 10,
     paddingBottom: 5,
-    
   },
   icons: {
-    fontSize: 25
+    fontSize: 25,
   },
 })
 
