@@ -3,15 +3,16 @@ import { View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import style from './style'
 
 const BottomMenu = () => {
   return (
-    <View>
-      <Icon name="home-variant" />
-      <FeatherIcon name="search" />
-      <MaterialIcon name="add-box" />
-      <MaterialIcon name="favorite-border" />
-      <FeatherIcon name="user" />
+    <View style={style.bototmMenu}>
+      <Icon name="home-variant" style={style.icon} />
+      <FeatherIcon name="search" style={style.icon} />
+      <MaterialIcon name="add-box" style={style.icon} />
+      <MaterialIcon name="favorite-border" style={style.icon} />
+      <FeatherIcon name="user" style={style.icon} />
     </View>
   )
 }

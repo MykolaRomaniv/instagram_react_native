@@ -5,7 +5,7 @@ import { Divider } from 'react-native-paper'
 import Post from '../../components/Post'
 import { FlatList } from 'react-native'
 import BottomMenu from '../../components/BottomMenu'
-import Storys from './view/Storys'
+import Stories from './view/Stories'
 
 const PHOTO = require('../../assets/Photo.png')
 
@@ -18,8 +18,8 @@ const TEST_POST = {
   liked: false,
   bookmarked: false,
   likes: 5555,
-  comments: ['lalala'],
-  hashtags: ['qwert'],
+  comments: ['lalala', 'asdadqdewwfghgfdsfgd', 'asdasdsadasd'],
+  hashtags: ['qwert', 'uhhbhjkmmk', 'ojnufykmnn'],
 }
 
 const DATA = [TEST_POST, TEST_POST, TEST_POST, TEST_POST, TEST_POST, TEST_POST]
@@ -28,9 +28,10 @@ const main = () => {
   return (
     <>
       <Header />
-      <Storys />
       <Divider />
-      <FlatList data={DATA} renderItem={({ item, index }) => <Post post={{id: index, ...item}} />} />
+      <Stories />
+      <Divider />
+      <FlatList data={DATA} renderItem={({ item, index }) => <Post post={{id: index, ...item}} />} showsHorizontalScrollIndicator={false} />
       <BottomMenu />
     </>
   )

@@ -1,21 +1,49 @@
 import React, { Component } from 'react'
-import { View, Text, Image, ImageSourcePropType } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  ImageSourcePropType,
+  Dimensions,
+  FlatList,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import CpmmentIcon from 'react-native-vector-icons/Fontisto'
+import AntDesignIcon from 'react-native-vector-icons/AntDesign'
+import FeatherIcon from 'react-native-vector-icons/Feather'
+import FontistoIcon from 'react-native-vector-icons/Fontisto'
 import { IPost } from './IPost'
-import Carousel from 'react-native-snap-carousel'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
+import style from './style'
 
 interface IProps {
   post: IPost
 }
 
 class Post extends Component<IProps> {
-  _renderItem = ({ item, index }: { item: ImageSourcePropType; index: number }) => {
+  state = {
+    activePhoto: 0,
+  }
+
+  _renderItem = ({
+    item,
+    index,
+  }: {
+    item: ImageSourcePropType
+    index: number
+  }) => {
     return (
       <View>
-          <Image source={item} />
+        <Image source={item} style={{ width: '100%' }} />
       </View>
     )
+  }
+
+  _renderComment = ({ item, index }: { item: string; index: number }) => {
+    return <Text>{item + ' '}</Text>
+  }
+
+  _renderHashtag = ({ item, index }: { item: string; index: number }) => {
+    return <Text style={style.hashtags}>{'#' + item + ' '}</Text>
   }
 
   _carousel = null
@@ -23,52 +51,58 @@ class Post extends Component<IProps> {
   render() {
     return (
       <View>
-        {/*header*/}
-        <View>
-          {/*avatar */}
-          <View>
-            <Image source={this.props.post.avatar} />
-            {/*header text*/}
-            <View>
-              <Text>{this.props.post.username}</Text>
+        <View style={style.header}>
+          <View style={style.avatar}>
+            <Image source={this.props.post.avatar} style={style.avatarImg}/>
+            <View style={style.avatarText}>
+              <Text style={style.username}>{this.props.post.username}</Text>
               <Text>{this.props.post.location}</Text>
             </View>
           </View>
-          <Icon name="more-horiz" />
+          <Icon name="more-horiz" style={style.icon} />
         </View>
-        {/**photo carousel */}
-        <View>
-          <Carousel
-            ref={(c: any) => {
-              this._carousel = c
-            }}
-            data={this.props.post.photos}
-            renderItem={this._renderItem}
-            sliderWidth={600}
-            itemWidth={300}
-          />
-        </View>
-        {/**actions */}
-        <View>
-          <View>
-            <Icon
-              name={this.props.post.liked ? 'favorite' : 'favorite-border'}
+        <Carousel
+          ref={(c: any) => {
+            this._carousel = c
+          }}
+          data={this.props.post.photos}
+          renderItem={this._renderItem}
+          sliderWidth={Dimensions.get('window').width}
+          itemWidth={Dimensions.get('window').width}
+          onSnapToItem={(index) => this.setState({ activePhoto: index })}
+        />
+        <View style={style.actionIcons}>
+          <View style={style.innerIcons}>
+            <AntDesignIcon
+              name={this.props.post.liked ? 'heart' : 'hearto'}
+              style={style.icon}
             />
-            <CpmmentIcon name="comment" />
-            <Icon name="send" />
+            <FontistoIcon name="comment" style={style.icon} />
+            <FeatherIcon name="send" style={style.icon} />
+            <Pagination
+              dotsLength={this.props.post.photos.length}
+              activeDotIndex={this.state.activePhoto}
+              containerStyle={style.pagContainer}
+              dotStyle={style.dot}
+            />
           </View>
           <Icon
             name={this.props.post.bookmarked ? 'bookmark' : 'bookmark-border'}
+            style={style.icon}
           />
         </View>
-        <View>
+        <View style={style.commentSection}>
           <Text>Liked by {this.props.post.likes}</Text>
-        </View>
-        <View>
-          <Text>{this.props.post.comments}</Text>
-        </View>
-        <View>
-          <Text>{this.props.post.hashtags}</Text>
+          <FlatList
+            data={this.props.post.comments}
+            renderItem={this._renderComment}
+            horizontal={true}
+          />
+          <FlatList
+            data={this.props.post.hashtags}
+            renderItem={this._renderHashtag}
+            horizontal={true}
+          />
         </View>
       </View>
     )
