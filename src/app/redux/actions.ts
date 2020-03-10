@@ -35,28 +35,14 @@ export const getPosts = (): AppThunk => (dispatch) => {
 
 export const toggleLike = (post: IPost): actionTypes.ActionTypes => {
   console.log('2')
+  let newPost = post.liked
+    ? { ...post, likes: post.likes - 1, liked: !post.liked }
+    : { ...post, likes: post.likes + 1, liked: !post.liked }
+  console.log(newPost)
   return {
     type: actionTypes.TOGGLE_LIKE,
     payload: {
-      post: post.liked
-        ? { likes: post.likes - 1, liked: !post.liked, ...post }
-        : { likes: post.likes + 1, liked: !post.liked, ...post },
+      post: newPost,
     },
   }
 }
-
-// export const toggleBookmark = (post: IPost): AppThunk => (dispatch) => {
-//   let newPost = post.bookmarked
-//     ? { bookmarked: !post.bookmarked, ...post }
-//     : { bookmarked: !post.bookmarked, ...post }
-//   axios.put('/posts', newPost).then((res) => {
-//     dispatch({
-//       type: actionTypes.TOGGLE_LIKE,
-//       payload: {
-//         post: {
-//           ...res.data,
-//         },
-//       },
-//     })
-//   })
-// }

@@ -28,7 +28,7 @@ class Post extends Component<IProps, IState> {
 
   likePressedHandler = () => {
     console.log('1')
-    actions.toggleLike(this.props.post)
+    this.props.actions.toggleLike(this.props.post)
   }
 
   _renderItem = ({ item, index }: { item: string; index: number }) => {
