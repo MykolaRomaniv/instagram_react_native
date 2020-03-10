@@ -1,40 +1,40 @@
 import React, { Component } from 'react'
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  ImageSourcePropType,
-  Text,
-  View,
-} from 'react-native'
+import { Dimensions, FlatList, Image, Text, View } from 'react-native'
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import FontistoIcon from 'react-native-vector-icons/Fontisto'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { connect, ConnectedProps } from 'react-redux'
+import { bindActionCreators, Dispatch } from 'redux'
 
 import { IPost } from '../../../types/IPost'
+import * as actions from '../../redux/actions'
+import { ActionTypes } from '../../redux/types'
 import style from './style'
 
-interface IProps {
+interface IProps extends ConnectedProps<typeof connector> {
   post: IPost
 }
 
-class Post extends Component<IProps> {
+interface IState {
+  activePhoto: number
+}
+
+class Post extends Component<IProps, IState> {
   state = {
     activePhoto: 0,
   }
 
-  _renderItem = ({
-    item,
-    index,
-  }: {
-    item: ImageSourcePropType
-    index: number
-  }) => {
+  likePressedHandler = () => {
+    console.log('1')
+    actions.toggleLike(this.props.post)
+  }
+
+  _renderItem = ({ item, index }: { item: string; index: number }) => {
     return (
       <View>
-        <Image source={item} style={{ width: '100%' }} />
+        <Image source={{ uri: item }} style={{ width: '100%', height: 350 }} />
       </View>
     )
   }
@@ -54,7 +54,10 @@ class Post extends Component<IProps> {
       <View>
         <View style={style.header}>
           <View style={style.avatar}>
-            <Image source={this.props.post.avatar} style={style.avatarImg} />
+            <Image
+              source={{ uri: this.props.post.avatar }}
+              style={style.avatarImg}
+            />
             <View style={style.avatarText}>
               <Text style={style.username}>{this.props.post.username}</Text>
               <Text>{this.props.post.location}</Text>
@@ -77,6 +80,7 @@ class Post extends Component<IProps> {
             <AntDesignIcon
               name={this.props.post.liked ? 'heart' : 'hearto'}
               style={style.icon}
+              onPress={this.likePressedHandler}
             />
             <FontistoIcon name="comment" style={style.icon} />
             <FeatherIcon name="send" style={style.icon} />
@@ -98,11 +102,13 @@ class Post extends Component<IProps> {
             data={this.props.post.comments}
             renderItem={this._renderComment}
             horizontal={true}
+            keyExtractor={(item) => item}
           />
           <FlatList
             data={this.props.post.hashtags}
             renderItem={this._renderHashtag}
             horizontal={true}
+            keyExtractor={(item) => item}
           />
         </View>
       </View>
@@ -110,4 +116,10 @@ class Post extends Component<IProps> {
   }
 }
 
-export default Post
+const mapDispatchToProps = (dispatch: Dispatch<ActionTypes>) => ({
+  actions: bindActionCreators(actions, dispatch),
+})
+
+const connector = connect(null, mapDispatchToProps)
+
+export default connector(Post)

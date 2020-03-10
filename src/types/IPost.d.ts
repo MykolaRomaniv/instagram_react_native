@@ -2,10 +2,10 @@ import { ImageSourcePropType } from 'react-native'
 
 export interface IPost {
   id: number
-  avatar: ImageSourcePropType
+  avatar: string
   username: string
   location: string
-  photos: ImageSourcePropType[]
+  photos: string[]
   liked: boolean
   bookmarked: boolean
   likes: number

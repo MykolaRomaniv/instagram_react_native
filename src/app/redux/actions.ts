@@ -1,6 +1,5 @@
-import { INewPost, IPost } from '../../types/types'
+import { IPost } from '../../types/IPost'
 import { RootState } from '../boot/setup'
-import moment from 'moment'
 import { Action } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 
@@ -20,100 +19,44 @@ export const getPosts = (): AppThunk => (dispatch) => {
   })
 
   axios
-    .get('/posts')
+    .get('/posts.json')
     .then((res) => {
-      const sortedPosts = res.data.sort((postA: IPost, postB: IPost) => {
-        return moment(postA.createdAt).isBefore(postB.createdAt, 'second')
-          ? 1
-          : -1
-      })
-
       dispatch({
         type: actionTypes.GET_POSTS,
         payload: {
-          posts: sortedPosts,
+          posts: Object.values(res.data),
         },
       })
     })
     .catch((error) => {
-      // dispatch(errorNotify(`Can\`t get data from server${error}`))
+      // console.log('error', error)
     })
 }
 
-export const deletePost = (postId: number): AppThunk => (dispatch) => {
-  axios
-    .delete(`/posts/${postId}`)
-    .then(() => {
-      dispatch({
-        type: actionTypes.DELETE_POST,
-        payload: {
-          postId,
-        },
-      })
-    })
-    .catch((error) => {
-      // dispatch(errorNotify(`Can\`t delete post${error}`))
-    })
-}
-
-export const addPost = (post: INewPost, postIndex = 0): AppThunk => (
-  dispatch,
-) => {
-  axios
-    .post('/posts', post)
-    .then((res) => {
-      dispatch({
-        type: actionTypes.ADD_POST,
-        payload: {
-          post: res.data,
-          postIndex,
-        },
-      })
-    })
-    .catch((error) => {
-      // dispatch(errorNotify(`Can\`t add post${error}`))
-    })
-}
-
-export const addLike = (
-  post: IPost,
-  likes: number,
-): actionTypes.ActionTypes => {
+export const toggleLike = (post: IPost): actionTypes.ActionTypes => {
+  console.log('2')
   return {
     type: actionTypes.TOGGLE_LIKE,
     payload: {
-      post: {
-        ...post,
-        likes,
-      },
+      post: post.liked
+        ? { likes: post.likes - 1, liked: !post.liked, ...post }
+        : { likes: post.likes + 1, liked: !post.liked, ...post },
     },
   }
 }
 
-export const addComment = (
-  post: IPost,
-  comment: string,
-): actionTypes.ActionTypes => {
-  let comments = []
-  if (Array.isArray(post.comments)) {
-    comments = [
-      ...post.comments.slice(0, 0),
-      comment,
-      ...post.comments.slice(0),
-    ]
-  } else if (typeof post.comments === 'string') {
-    comments = [comment, post.comments]
-  } else {
-    comments = [comment]
-  }
-
-  return {
-    type: actionTypes.ADD_COMMENT,
-    payload: {
-      post: {
-        ...post,
-        comments,
-      },
-    },
-  }
-}
+// export const toggleBookmark = (post: IPost): AppThunk => (dispatch) => {
+//   let newPost = post.bookmarked
+//     ? { bookmarked: !post.bookmarked, ...post }
+//     : { bookmarked: !post.bookmarked, ...post }
+//   axios.put('/posts', newPost).then((res) => {
+//     dispatch({
+//       type: actionTypes.TOGGLE_LIKE,
+//       payload: {
+//         post: {
+//           ...res.data,
+//         },
+//       },
+//     })
+//   })
+// }

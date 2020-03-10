@@ -2,42 +2,23 @@ import React from 'react'
 import { FlatList, Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
+import { IPost } from 'src/types/IPost'
 import style from './style'
 
-const TEST_USER = {
-  photo: require('../../../assets/Avatar.png'),
-  username: 'vasya',
-}
-
-const USERS = [
-  TEST_USER,
-  TEST_USER,
-  TEST_USER,
-  TEST_USER,
-  TEST_USER,
-  TEST_USER,
-  TEST_USER,
-]
-
-const renderItem = ({
-  item,
-  index,
-}: {
-  item: typeof TEST_USER
-  index: number
-}) => {
+const renderItem = ({ item, index }: { item: IPost; index: number }) => {
   return (
     <View style={style.storyItem}>
-      <Image
-        source={require('../../../assets/Avatar.png')}
-        style={style.storyAvatar}
-      />
+      <Image source={{ uri: item.avatar }} style={style.storyAvatar} />
       <Text style={style.username}>{item.username}</Text>
     </View>
   )
 }
 
-const stories = () => {
+interface IProps {
+  posts: IPost[]
+}
+
+const stories = (props: IProps) => {
   return (
     <View>
       <View style={style.textContainer}>
@@ -49,10 +30,11 @@ const stories = () => {
       </View>
       <View>
         <FlatList
-          data={USERS}
+          data={props.posts}
           renderItem={renderItem}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.username}
         />
       </View>
     </View>
